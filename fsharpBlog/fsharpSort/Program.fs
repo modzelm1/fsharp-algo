@@ -44,8 +44,8 @@ let rec quicksortFirst = function
 let rec quicksortLast = function
    | [] -> []                         
    | inputList -> 
-        let revertedList = List.rev inputList 
-        quicksortFirst (List.concat [[revertedList.Head]; List.rev revertedList.Tail])
+        let revList = List.rev inputList 
+        quicksortFirst (List.concat [[revList.Head]; List.rev revList.Tail])
 
 //stolen from: http://stackoverflow.com/questions/2889961/f-insert-remove-item-from-list
 let removeAt index input =
