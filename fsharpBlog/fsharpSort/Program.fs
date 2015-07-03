@@ -3,8 +3,9 @@
 let rec selectsort = function
    | [] -> []
    | inputList ->
-        let minVal,greaterThanMinVal = List.partition ((>=) (List.min inputList)) inputList 
-        List.concat [minVal; selectsort greaterThanMinVal]
+        let minVal,gtMinVal = List.partition (fun e -> e = (List.min inputList)) inputList 
+        List.concat [minVal; selectsort gtMinVal]
+
 
 let rec insertsortHelper = function
     | ([],[]) -> []
@@ -67,9 +68,9 @@ let rec quicksortRandom = function
 
 [<EntryPoint>]
 let main argv = 
-    printfn "%A" (quicksortFirst [1;5;23;18;9;1;3])
-    printfn "%A" (quicksortLast [1;5;23;18;9;1;3])
-    printfn "%A" (quicksortRandom [1;5;23;18;9;1;3])
-    printfn "%A" (selectsort [1;5;23;18;9;1;3])
-    printfn "%A" (insertsort [1;5;23;18;9;1;3])
+    //printfn "%A" (quicksortFirst [1;5;23;18;9;1;3])
+    //printfn "%A" (quicksortLast [1;5;23;18;9;1;3])
+    //printfn "%A" (quicksortRandom [1;5;23;18;9;1;3])
+    printfn "%A" (selectsort [1; 99; 1;5;23;18;9;1;3])
+    //printfn "%A" (insertsort [1;5;23;18;9;1;3])
     0 // return an integer exit code
