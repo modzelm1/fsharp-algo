@@ -6,6 +6,18 @@ let rec selectsort = function
         let minVal,gtMinVal = List.partition (fun e -> e = (List.min inputList)) inputList 
         List.concat [minVal; selectsort gtMinVal]
 
+let rec selectsortFold = function
+   | [] -> []
+   | [f] -> [f]
+   | l ->
+        fst (
+            l |> 
+                List.fold (
+                    fun acc i ->
+                        let minVal,gtMinVal = 
+                            List.partition (fun e -> e = List.min (snd acc)) (snd acc) 
+                        (List.concat[fst acc; minVal], gtMinVal)
+                        ) ([], l))
 
 let rec insertsortHelper = function
     | ([],[]) -> []
@@ -23,18 +35,14 @@ let rec insertsort = function
    | f::t ->
         insertsortHelper ([f] , t)
 
-//let rec insertsort = function
-//   | [] -> []
-//   | [first] -> [first]
-//   | first::second::tail ->
-//        let test = first - second
-//        match test with
-//        | t when t <= 0 ->
-//            insertsortHelper (List.concat[ [first]; [second] ] , tail)
-//        | t when t > 0 ->
-//            insertsortHelper (List.concat[ [second]; [first] ] , tail)
-//        | _ -> []
-
+let rec insertsortFold = function
+   | [] -> []
+   | [f] -> [f]
+   | l ->
+        l |> List.fold (fun acc i ->
+                            let s, g = List.partition ((>=) i) acc 
+                            List.concat [s;[i];g]
+                            ) []
 
 let rec quicksortFirst = function
    | [] -> []                         
@@ -71,6 +79,8 @@ let main argv =
     //printfn "%A" (quicksortFirst [1;5;23;18;9;1;3])
     //printfn "%A" (quicksortLast [1;5;23;18;9;1;3])
     //printfn "%A" (quicksortRandom [1;5;23;18;9;1;3])
-    printfn "%A" (selectsort [1; 99; 1;5;23;18;9;1;3])
+    //printfn "%A" (selectsort [1;5;23;18;9;1;3])
+    //printfn "%A" (insertsortFold [1;5;23;18;9;1;3])
+    printfn "%A" (selectsortFold [1;5;23;18;9;1;3])
     //printfn "%A" (insertsort [1;5;23;18;9;1;3])
     0 // return an integer exit code
