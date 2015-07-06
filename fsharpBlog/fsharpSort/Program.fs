@@ -10,14 +10,13 @@ let rec selectsortFold = function
    | [] -> []
    | [f] -> [f]
    | l ->
-        fst (
+        fst ( 
             l |> 
                 List.fold (
                     fun acc i ->
-                        let minVal,gtMinVal = 
-                            List.partition (fun e -> e = List.min (snd acc)) (snd acc) 
+                        let minVal,gtMinVal = List.partition (fun e -> e = List.min (snd acc)) (snd acc) 
                         (List.concat[fst acc; minVal], gtMinVal)
-                        ) ([], l))
+                )([], l))
 
 let rec insertsortHelper = function
     | ([],[]) -> []
@@ -74,13 +73,55 @@ let rec quicksortRandom = function
         let listWithoutRandomVal = removeAt randomIndex inputList
         quicksortFirst (List.concat [[ravdomVal]; listWithoutRandomVal])
 
+let rec mergeSortWorker = function
+    | acc,[],[] -> acc
+    | acc,l,[] -> List.concat [acc; l]
+    | acc,[],r -> List.concat [acc; r]
+    | acc,l, r ->
+          let test = List.head l - List.head r
+          match test with
+            | t when t <= 0 ->
+                mergeSortWorker (List.concat [acc; [List.head l]], List.tail l, r)
+            | t when t > 0 ->
+                mergeSortWorker (List.concat [acc; [List.head r]], l, List.tail r)
+            | _ -> []
+
+let rec mergeSort = function
+    | [] -> []
+    | [e] -> [e]
+    | l ->
+        let m = (List.length l)/2
+        let firstList = l |> Seq.take m |> Seq.toList
+        let secondList = l |> Seq.skip m |> Seq.toList
+        let fs = firstList |> mergeSort
+        let ss = secondList |> mergeSort
+        mergeSortWorker([], fs, ss)
+
+let getTestList count =
+    let rnd = System.Random(DateTime.Now.Millisecond)
+    List.init count (fun _ -> rnd.Next (10))
+
+//comare my sorting results with .net implementing sorting function
+//useful for short lists only
+let testSortAlgo sortFun sortFunName =
+    let listToSort = getTestList 10
+    let sortResult1 = List.sort listToSort
+    let sortResult2 = sortFun listToSort
+    printfn "testing %s" sortFunName
+    printfn "list to sort:          %A" listToSort
+    printfn "reference sort result: %A" sortResult1
+    printfn "sort result:           %A" sortResult2
+    printfn "are sore and reference equal? %b" (sortResult1 = sortResult2)
+    printfn "\n"
+
 [<EntryPoint>]
 let main argv = 
-    //printfn "%A" (quicksortFirst [1;5;23;18;9;1;3])
-    //printfn "%A" (quicksortLast [1;5;23;18;9;1;3])
-    //printfn "%A" (quicksortRandom [1;5;23;18;9;1;3])
-    //printfn "%A" (selectsort [1;5;23;18;9;1;3])
-    //printfn "%A" (insertsortFold [1;5;23;18;9;1;3])
-    printfn "%A" (selectsortFold [1;5;23;18;9;1;3])
-    //printfn "%A" (insertsort [1;5;23;18;9;1;3])
-    0 // return an integer exit code
+    testSortAlgo quicksortFirst "quicksortFirst"
+    testSortAlgo quicksortLast "quicksortLast"
+    testSortAlgo quicksortRandom "quicksortRandom"
+    testSortAlgo selectsort "selectsort"
+    testSortAlgo insertsort "insertsort"
+    testSortAlgo mergeSort "mergeSort"
+    testSortAlgo selectsortFold "selectsortFold"
+    testSortAlgo insertsortFold "insertsortFold"
+    0
