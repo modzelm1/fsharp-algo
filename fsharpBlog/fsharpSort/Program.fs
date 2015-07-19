@@ -1,57 +1,51 @@
 ﻿module MainModule 
 open System
-open SortingModule
 open SortingHelperModule
+open SortingModule
 
 let reportTime t =
     printfn "list sorted in %f" t
+
+let restartStopWatch (s: System.Diagnostics.Stopwatch) =
+    s.Stop()
+    let elapsedTime = s.Elapsed.TotalMilliseconds
+    s.Reset()
+    elapsedTime
 
 let testSortTimes sortfun =
     let listToSort1 = SortingHelperModule.getTestList 100 Int32.MaxValue
     let listToSort2 = SortingHelperModule.getTestList 1000 Int32.MaxValue
     let listToSort3 = SortingHelperModule.getTestList 10000 Int32.MaxValue
     let listToSort4 = SortingHelperModule.getTestList 100000 Int32.MaxValue
-    let listToSort5 = SortingHelperModule.getTestList 1000000 Int32.MaxValue
-    
+
     let stopWatch = System.Diagnostics.Stopwatch.StartNew()
+    stopWatch.Stop();
+    stopWatch.Reset();
+    
+    stopWatch.Start()
     let sortedList1 = sortfun listToSort1
-    stopWatch.Stop()
-    reportTime stopWatch.Elapsed.TotalMilliseconds
-    stopWatch.Reset()
+    reportTime (restartStopWatch stopWatch)
 
     stopWatch.Start()
     let sortedList2 = sortfun listToSort2
-    stopWatch.Stop()
-    reportTime stopWatch.Elapsed.TotalMilliseconds
-    stopWatch.Reset()
+    reportTime (restartStopWatch stopWatch)
 
     stopWatch.Start()
     let sortedList3 = sortfun listToSort3
-    stopWatch.Stop()
-    reportTime stopWatch.Elapsed.TotalMilliseconds
-    stopWatch.Reset()
+    reportTime (restartStopWatch stopWatch)
 
     stopWatch.Start()
     let sortedList4 = sortfun listToSort4
-    stopWatch.Stop()
-    reportTime stopWatch.Elapsed.TotalMilliseconds
-    stopWatch.Reset()
-
-//    stopWatch.Start()
-//    let sortedList5 = sortfun listToSort5
-//    stopWatch.Stop()
-//    reportTime stopWatch.Elapsed.TotalMilliseconds
-//    stopWatch.Reset()
-//    printfn ""
+    reportTime (restartStopWatch stopWatch)
 
 [<EntryPoint>]
 let main argv = 
-    //testSortTimes selectsort works
+    //testSortTimes selectsort //works
     //testSortTimes quicksortFirst
     //testSortTimes quicksortLast
     //testSortTimes quicksortRandom
-    testSortTimes insertsort
-    testSortTimes mergeSort
+    //testSortTimes insertsort
+    //testSortTimes mergeSort
     testSortTimes List.sort
     //testSortAlgoLongList selectsort "selectsort" 80000000
     //testSortAlgoLongList selectsortFold "selectsortFold" 80000000
