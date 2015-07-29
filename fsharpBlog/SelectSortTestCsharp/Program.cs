@@ -20,12 +20,6 @@ namespace SelectSortTestCsharp
                     result.Item2.Add(item);
             return result;
         }
-
-        public static void PrintList<T>(this List<T> list)
-        {
-            foreach (var item in list)
-                Console.Write(item.ToString());
-        }
     }
 
     class Program
@@ -100,12 +94,6 @@ namespace SelectSortTestCsharp
             PerformTest(stopWatch, listToSort2, SelectSortSlow);
             PerformTest(stopWatch, listToSort3, SelectSortSlow);
             Console.WriteLine("SelectSortSlow done");
-
-            //Console.WriteLine("Starting SelectSortSlow");
-            //stopWatch.Start();
-            //var res2 = SelectSortSlow(listToSort);
-            //stopWatch.Stop();
-            //Console.WriteLine("SelectSortSlow done in: {0}", stopWatch.Elapsed);
         }
     }
 }
