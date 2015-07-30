@@ -11,7 +11,7 @@ let restartStopWatch (s: System.Diagnostics.Stopwatch) =
 
 let getTestList count maxVal =
     let rnd = System.Random(DateTime.Now.Millisecond)
-    List.init count (fun _ -> rnd.Next (10))
+    List.init count (fun _ -> rnd.Next (maxVal))
 
 let testSorting (s: System.Diagnostics.Stopwatch) sortFunc listToSort =
     s.Start()
@@ -49,7 +49,7 @@ let main argv =
     printfn "Starting selectsort_fast"
     testSorting stopWatch selectsort_fast listToSort1
     testSorting stopWatch selectsort_fast listToSort2
-    testSorting stopWatch selectsort_fast listToSort3
+    //testSorting stopWatch selectsort_fast listToSort3
     printfn "selectsort_fast done"
 
     printfn ""
