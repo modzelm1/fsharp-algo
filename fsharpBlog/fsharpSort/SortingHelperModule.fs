@@ -3,7 +3,7 @@ open System
 
 let getTestList count maxVal =
     let rnd = System.Random(DateTime.Now.Millisecond)
-    List.init count (fun _ -> rnd.Next (10))
+    List.init count (fun _ -> rnd.Next (maxVal))
 
 //compare my sorting results with .net implemented sorting function
 //useful for short lists only
