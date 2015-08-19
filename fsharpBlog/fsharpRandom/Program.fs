@@ -2,7 +2,7 @@
 
 let suffle (inputList: int List) = 
         let rnd = System.Random DateTime.Now.Millisecond
-        List.fold (fun acc item -> 
+        snd (List.fold (fun acc item -> 
                         let randomCardIndex = rnd.Next (fst acc, inputList.Length)
                         (fst acc) + 1 ,
                         List.mapi (fun tmpIndex tmpItem -> 
@@ -12,20 +12,47 @@ let suffle (inputList: int List) =
                                 | _ -> tmpItem ) (snd acc) 
                      ) 
                      (0, inputList) 
-                     inputList
+                     inputList)
 
+let add resultSpace a b =
+    let r = new Random(DateTime.Now.Millisecond)
+    let loopList = [1..resultSpace]
+    List.reduce (fun acc elem ->
+                     let ra = r.Next(resultSpace)
+                     let rb = r.Next(resultSpace)
+                     match (ra, rb) with 
+                        | x when fst x < a || snd x < b -> acc + 1
+                        | _ -> acc                
+                ) loopList
 
+let multiply varMaxVal resultSpace a b =
+    let r = new Random(DateTime.Now.Millisecond)
+    let loopList = [1..resultSpace]
+    List.reduce (fun acc elem ->
+                     let ra = r.Next(varMaxVal)
+                     let rb = r.Next(varMaxVal)
+                     match (ra, rb) with 
+                        | x when fst x < a && snd x < b -> acc + 1
+                        | _ -> acc                
+                ) loopList
 
 [<EntryPoint>]
 let main argv = 
 
-    let toShuffle1 = [1; 2; 3; 4; 5; 6; 7; 8; 9 ]
-    let toShuffle2 = [1; 2; 3; 4; 5; 6; 7; 8; 9 ]
-    let toShuffle3 = [1; 2; 3; 4; 5; 6; 7; 8; 9 ]
+    let toShuffle = [1..24]
 
-    printfn "%A" (suffle toShuffle1)
-    printfn "%A" (suffle toShuffle2)
-    printfn "%A" (suffle toShuffle3)
+    printfn "input:  %A" (toShuffle)
+    printfn "result: %A" (suffle toShuffle)
+    printfn "input:  %A" (toShuffle)
+    printfn "result: %A" (suffle toShuffle)
+
+//    let loopList = [1..1000]
+//    let result = List.reduce (fun acc elem -> acc + (add 200 36 22)) loopList
+//    printfn "add result: %A" (result/1000)
+//
+//    let loopList = [1..1000]
+//    let result = List.reduce (fun acc elem -> acc + (multiply 100 10000 36 22)) loopList
+//    printfn "multiply result: %A" (result/1000)
 
     0 // return an integer exit code
     
