@@ -1,6 +1,6 @@
 ﻿open System
 
-let suffle (inputList: int List) = 
+let suffleList (inputList: int List) = 
         let rnd = System.Random DateTime.Now.Millisecond
         snd (List.fold (fun acc item -> 
                         let randomCardIndex = rnd.Next (fst acc, inputList.Length)
@@ -13,6 +13,17 @@ let suffle (inputList: int List) =
                      ) 
                      (0, inputList) 
                      inputList)
+
+let suffleArray (inputArray: int[]) = 
+        let rnd = System.Random DateTime.Now.Millisecond
+        snd (Array.fold (fun acc item -> 
+                            let randomCardIndex = rnd.Next (fst acc, inputArray.Length)
+                            let tmp = inputArray.[randomCardIndex]
+                            inputArray.[randomCardIndex] <- inputArray.[fst acc]
+                            inputArray.[fst acc] <- tmp
+                            ((fst acc) + 1 , inputArray)
+                        ) 
+                     (0, inputArray) inputArray)
 
 let add resultSpace a b =
     let r = new Random(DateTime.Now.Millisecond)
@@ -39,12 +50,16 @@ let multiply varMaxVal resultSpace a b =
 [<EntryPoint>]
 let main argv = 
 
-    let toShuffle = [1..24]
+    let toShuffleList = [1..10]
+    let toShuffleArray = [|1..10|]
 
-    printfn "input:  %A" (toShuffle)
-    printfn "result: %A" (suffle toShuffle)
-    printfn "input:  %A" (toShuffle)
-    printfn "result: %A" (suffle toShuffle)
+    printfn "input:  %A" (toShuffleList)
+    printfn "result: %A" (suffleList toShuffleList)
+
+    printfn ""
+
+    printfn "input:  %A" (toShuffleArray)
+    printfn "result: %A" (suffleArray toShuffleArray)
 
 //    let loopList = [1..1000]
 //    let result = List.reduce (fun acc elem -> acc + (add 200 36 22)) loopList
